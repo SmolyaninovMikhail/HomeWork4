@@ -1,0 +1,22 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+// 1.Загрузить из файла многострочный текст формата ФИО возраст и пол через пробелы. Разбить по строкам и вывести в консоль в формате "Иванов И.И. 32 М"
+
+public class HomeWork4_01 {
+    public static void main(String[] args) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/file.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(" ");
+                String fullName = parts[0] + " " + parts[1].charAt(0) + "." + parts[2].charAt(0) + ".";
+                int age = Integer.parseInt(parts[3]);
+                String gender = parts[4].equals("M") ? "M" : "F";
+                System.out.println(fullName + " " + age + " " + gender);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
