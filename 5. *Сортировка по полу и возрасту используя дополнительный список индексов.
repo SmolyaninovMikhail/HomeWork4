@@ -1,0 +1,57 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+// 5.*Сортировка по полу и возрасту используя дополнительный список индексов.
+
+public class HomeWork4_03 {
+    public static void main(String[] args) {
+        List<String> surnames = new ArrayList<>();
+        List<String> names = new ArrayList<>();
+        List<String> patronymics = new ArrayList<>();
+        List<Integer> ages = new ArrayList<>();
+        List<String> genders = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/file.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(" ");
+                surnames.add(parts[0]);
+                names.add(parts[1]);
+                patronymics.add(parts[2]);
+                ages.add(Integer.parseInt(parts[3]));
+                genders.add(parts[4]);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < surnames.size(); i++) {
+            indexes.add(i);
+        }
+
+        Collections.sort(indexes, (i1, i2) -> {
+            String g1 = genders.get(i1);
+            String g2 = genders.get(i2);
+            int a1 = ages.get(i1);
+            int a2 = ages.get(i2);
+            if (g1.equals(g2)) {
+                return Integer.compare(a1, a2);
+            } else {
+                return g1.compareTo(g2);
+            }
+        });
+
+        for (int i = 0; i < surnames.size(); i++) {
+            int index = indexes.get(i);
+            String fullName = surnames.get(index) + " " + names.get(index).charAt(0) + "." + patronymics.get(index).charAt(0) + ".";
+            int age = ages.get(index);
+            String gender = genders.get(index).equals("M") ? "M" : "F";
+            System.out.println(fullName + " " + age + " " + gender);
+        }
+    }
+}
